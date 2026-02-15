@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Van Gogh Style Generator</title>
+
+  <style>
+    * {
+      box-sizing: border-box;
+      font-family: Inter, system-ui, sans-serif;
+    }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      background: radial-gradient(circle at top, #2a2a72, #0f172a);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #e5e7eb;
+    }
+
+    .container {
+      width: 480px;
+      background: #020617;
+      padding: 28px;
+      border-radius: 16px;
+      box-shadow: 0 30px 80px rgba(0,0,0,0.5);
+    }
+
+    h1 {
+      margin: 0 0 16px;
+      text-align: center;
+      font-size: 24px;
+      font-weight: 600;
+    }
+
+    textarea {
+      width: 100%;
+      height: 100px;
+      padding: 12px;
+      border-radius: 10px;
+      border: none;
+      outline: none;
+      resize: none;
+      font-size: 14px;
+      background: #0f172a;
+      color: #e5e7eb;
+    }
+
+    textarea::placeholder {
+      color: #64748b;
+    }
+
+    button {
+      margin-top: 16px;
+      width: 100%;
+      padding: 12px;
+      border-radius: 10px;
+      border: none;
+      font-size: 15px;
+      font-weight: 500;
+      cursor: not-allowed;
+      background: #334155;
+      color: #94a3b8;
+      transition: 0.2s;
+    }
+
+    button.enabled {
+      background: linear-gradient(135deg, #6366f1, #8b5cf6);
+      color: white;
+      cursor: pointer;
+    }
+
+    .image-box {
+      margin-top: 20px;
+      text-align: center;
+    }
+
+    .image-box img {
+      max-width: 100%;
+      border-radius: 12px;
+      margin-top: 10px;
+      box-shadow: 0 10px 40px rgba(0,0,0,0.6);
+    }
+
+    .hint {
+      margin-top: 8px;
+      font-size: 12px;
+      text-align: center;
+      color: #94a3b8;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="container">
+    <h1>Van Gogh Style Generator</h1>
+
+    <form method="post">
+      <textarea
+        name="prompt"
+        id="prompt"
+        placeholder="Describe the scene you want to generate..."
+        required
+      >{{ prompt if prompt else "" }}</textarea>
+
+      <button id="generateBtn" disabled>Generate</button>
+    </form>
+
+    <div class="hint">Enter a prompt to enable generation</div>
+
+    {% if image_exist %}
+    <div class="image-box">
+      <img src="{{ url_for('static',path='generated_image.png') }}" alt="Generated image" />
+    </div>
+    {% endif %}
+  </div>
+
+  <script>
+    const textarea = document.getElementById("prompt");
+    const button = document.getElementById("generateBtn");
+
+    function updateButton() {
+      if (textarea.value.trim().length > 0) {
+        button.disabled = false;
+        button.classList.add("enabled");
+      } else {
+        button.disabled = true;
+        button.classList.remove("enabled");
+      }
+    }
+
+    textarea.addEventListener("input", updateButton);
+    updateButton();
+  </script>
+</body>
+</html>
